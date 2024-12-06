@@ -38,6 +38,15 @@ public class Order {
     }
 
     //<<< Clean Arch / Port Method
+    public void placeOrder(PlaceOrderCommand placeOrderCommand) {
+        //implement business logic here:
+
+        OrderPlaced orderPlaced = new OrderPlaced(this);
+        orderPlaced.publishAfterCommit();
+    }
+
+    //>>> Clean Arch / Port Method
+    //<<< Clean Arch / Port Method
     public void acceptOrder(AcceptOrderCommand acceptOrderCommand) {
         //implement business logic here:
 

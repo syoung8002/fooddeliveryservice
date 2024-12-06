@@ -222,17 +222,18 @@
             change(){
                 this.$emit('input', this.value);
             },
-            async acceptOrder(params) {
+            async acceptOrder() {
                 try {
-                    if(!this.offline) {
-                        var temp = await axios.put(axios.fixUrl(this.value._links[''].href), params)
-                        for(var k in temp.data) {
-                            this.value[k]=temp.data[k];
-                        }
+                    if(!this.offline){
+                        var temp = await axios.post(axios.fixUrl(this.value._links['/acceptorder'].href))
+                        for(var k in temp.data) this.value[k]=temp.data[k];
                     }
 
                     this.editMode = false;
-                    this.closeAcceptOrder();
+                    
+                    this.$emit('input', this.value);
+                    this.$emit('delete', this.value);
+                
                 } catch(e) {
                     this.snackbar.status = true
                     if(e.response && e.response.data.message) {
@@ -242,23 +243,18 @@
                     }
                 }
             },
-            openAcceptOrder() {
-                this.acceptOrderDiagram = true;
-            },
-            closeAcceptOrder() {
-                this.acceptOrderDiagram = false;
-            },
-            async rejectOrder(params) {
+            async rejectOrder() {
                 try {
-                    if(!this.offline) {
-                        var temp = await axios.put(axios.fixUrl(this.value._links[''].href), params)
-                        for(var k in temp.data) {
-                            this.value[k]=temp.data[k];
-                        }
+                    if(!this.offline){
+                        var temp = await axios.post(axios.fixUrl(this.value._links['/rejectorder'].href))
+                        for(var k in temp.data) this.value[k]=temp.data[k];
                     }
 
                     this.editMode = false;
-                    this.closeRejectOrder();
+                    
+                    this.$emit('input', this.value);
+                    this.$emit('delete', this.value);
+                
                 } catch(e) {
                     this.snackbar.status = true
                     if(e.response && e.response.data.message) {
@@ -267,12 +263,6 @@
                         this.snackbar.text = e
                     }
                 }
-            },
-            openRejectOrder() {
-                this.rejectOrderDiagram = true;
-            },
-            closeRejectOrder() {
-                this.rejectOrderDiagram = false;
             },
         },
     }

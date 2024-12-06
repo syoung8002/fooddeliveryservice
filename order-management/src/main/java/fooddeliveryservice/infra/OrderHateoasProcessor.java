@@ -13,16 +13,29 @@ public class OrderHateoasProcessor
     @Override
     public EntityModel<Order> process(EntityModel<Order> model) {
         model.add(
-            Link.of(model.getRequiredLink("self").getHref() + "/").withRel("")
+            Link
+                .of(model.getRequiredLink("self").getHref() + "//placeorder")
+                .withRel("/placeorder")
         );
         model.add(
-            Link.of(model.getRequiredLink("self").getHref() + "/").withRel("")
+            Link
+                .of(model.getRequiredLink("self").getHref() + "//acceptorder")
+                .withRel("/acceptorder")
         );
         model.add(
-            Link.of(model.getRequiredLink("self").getHref() + "/").withRel("")
+            Link
+                .of(model.getRequiredLink("self").getHref() + "//rejectorder")
+                .withRel("/rejectorder")
         );
         model.add(
-            Link.of(model.getRequiredLink("self").getHref() + "/").withRel("")
+            Link
+                .of(model.getRequiredLink("self").getHref() + "//pickupfood")
+                .withRel("/pickupfood")
+        );
+        model.add(
+            Link
+                .of(model.getRequiredLink("self").getHref() + "//deliverfood")
+                .withRel("/deliverfood")
         );
 
         return model;

@@ -42,7 +42,7 @@
                     text
                     @click="save"
                 >
-                    주문하기
+                저장
                 </v-btn>
                 <v-btn
                     color="primary"
@@ -64,6 +64,20 @@
         </v-card-actions>
         <v-card-actions>
             <v-spacer></v-spacer>
+            <v-btn
+                v-if="!editMode"
+                color="primary"
+                text
+                @click="openPlaceOrder"
+            >
+                PlaceOrder
+            </v-btn>
+            <v-dialog v-model="placeOrderDiagram" width="500">
+                <PlaceOrderCommand
+                    @closeDialog="closePlaceOrder"
+                    @placeOrder="placeOrder"
+                ></PlaceOrderCommand>
+            </v-dialog>
             <v-btn
                 v-if="!editMode"
                 color="primary"
@@ -157,6 +171,7 @@
                 timeout: 5000,
                 text: '',
             },
+            placeOrderDiagram: false,
             acceptOrderDiagram: false,
             rejectOrderDiagram: false,
             pickupFoodDiagram: false,
@@ -258,17 +273,18 @@
             change(){
                 this.$emit('input', this.value);
             },
-            async acceptOrder(params) {
+            async placeOrder() {
                 try {
-                    if(!this.offline) {
-                        var temp = await axios.put(axios.fixUrl(this.value._links[''].href), params)
-                        for(var k in temp.data) {
-                            this.value[k]=temp.data[k];
-                        }
+                    if(!this.offline){
+                        var temp = await axios.post(axios.fixUrl(this.value._links['/placeorder'].href))
+                        for(var k in temp.data) this.value[k]=temp.data[k];
                     }
 
                     this.editMode = false;
-                    this.closeAcceptOrder();
+                    
+                    this.$emit('input', this.value);
+                    this.$emit('delete', this.value);
+                
                 } catch(e) {
                     this.snackbar.status = true
                     if(e.response && e.response.data.message) {
@@ -278,23 +294,18 @@
                     }
                 }
             },
-            openAcceptOrder() {
-                this.acceptOrderDiagram = true;
-            },
-            closeAcceptOrder() {
-                this.acceptOrderDiagram = false;
-            },
-            async rejectOrder(params) {
+            async acceptOrder() {
                 try {
-                    if(!this.offline) {
-                        var temp = await axios.put(axios.fixUrl(this.value._links[''].href), params)
-                        for(var k in temp.data) {
-                            this.value[k]=temp.data[k];
-                        }
+                    if(!this.offline){
+                        var temp = await axios.post(axios.fixUrl(this.value._links['/acceptorder'].href))
+                        for(var k in temp.data) this.value[k]=temp.data[k];
                     }
 
                     this.editMode = false;
-                    this.closeRejectOrder();
+                    
+                    this.$emit('input', this.value);
+                    this.$emit('delete', this.value);
+                
                 } catch(e) {
                     this.snackbar.status = true
                     if(e.response && e.response.data.message) {
@@ -304,23 +315,18 @@
                     }
                 }
             },
-            openRejectOrder() {
-                this.rejectOrderDiagram = true;
-            },
-            closeRejectOrder() {
-                this.rejectOrderDiagram = false;
-            },
-            async pickupFood(params) {
+            async rejectOrder() {
                 try {
-                    if(!this.offline) {
-                        var temp = await axios.put(axios.fixUrl(this.value._links[''].href), params)
-                        for(var k in temp.data) {
-                            this.value[k]=temp.data[k];
-                        }
+                    if(!this.offline){
+                        var temp = await axios.post(axios.fixUrl(this.value._links['/rejectorder'].href))
+                        for(var k in temp.data) this.value[k]=temp.data[k];
                     }
 
                     this.editMode = false;
-                    this.closePickupFood();
+                    
+                    this.$emit('input', this.value);
+                    this.$emit('delete', this.value);
+                
                 } catch(e) {
                     this.snackbar.status = true
                     if(e.response && e.response.data.message) {
@@ -330,23 +336,18 @@
                     }
                 }
             },
-            openPickupFood() {
-                this.pickupFoodDiagram = true;
-            },
-            closePickupFood() {
-                this.pickupFoodDiagram = false;
-            },
-            async deliverFood(params) {
+            async pickupFood() {
                 try {
-                    if(!this.offline) {
-                        var temp = await axios.put(axios.fixUrl(this.value._links[''].href), params)
-                        for(var k in temp.data) {
-                            this.value[k]=temp.data[k];
-                        }
+                    if(!this.offline){
+                        var temp = await axios.post(axios.fixUrl(this.value._links['/pickupfood'].href))
+                        for(var k in temp.data) this.value[k]=temp.data[k];
                     }
 
                     this.editMode = false;
-                    this.closeDeliverFood();
+                    
+                    this.$emit('input', this.value);
+                    this.$emit('delete', this.value);
+                
                 } catch(e) {
                     this.snackbar.status = true
                     if(e.response && e.response.data.message) {
@@ -356,11 +357,26 @@
                     }
                 }
             },
-            openDeliverFood() {
-                this.deliverFoodDiagram = true;
-            },
-            closeDeliverFood() {
-                this.deliverFoodDiagram = false;
+            async deliverFood() {
+                try {
+                    if(!this.offline){
+                        var temp = await axios.post(axios.fixUrl(this.value._links['/deliverfood'].href))
+                        for(var k in temp.data) this.value[k]=temp.data[k];
+                    }
+
+                    this.editMode = false;
+                    
+                    this.$emit('input', this.value);
+                    this.$emit('delete', this.value);
+                
+                } catch(e) {
+                    this.snackbar.status = true
+                    if(e.response && e.response.data.message) {
+                        this.snackbar.text = e.response.data.message
+                    } else {
+                        this.snackbar.text = e
+                    }
+                }
             },
         },
     }
