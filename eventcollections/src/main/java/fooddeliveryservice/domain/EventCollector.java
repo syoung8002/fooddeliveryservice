@@ -1,6 +1,6 @@
 package fooddeliveryservice.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -19,5 +19,5 @@ public class EventCollector {
     private String type;
     private String correlationKey;
     private String payload;
-    private Date timestamp;
+    private Long timestamp;
 }

@@ -12,7 +12,7 @@ spring:
         - id: order-management
           uri: http://localhost:8082
           predicates:
-            - Path=, 
+            - Path=/orders/**,
         - id: delivery-management
           uri: http://localhost:8083
           predicates:
@@ -20,11 +20,11 @@ spring:
         - id: restaurant-management
           uri: http://localhost:8084
           predicates:
-            - Path=, 
+            - Path=/restaurants/**,
         - id: eventcollections
           uri: http://localhost:8085
           predicates:
-            - Path=, /eventCollectors/**
+            - Path=/eventCollectors/**,
         - id: frontend
           uri: http://localhost:8080
           predicates:
