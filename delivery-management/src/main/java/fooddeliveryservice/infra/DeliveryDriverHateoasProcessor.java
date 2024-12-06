@@ -15,10 +15,16 @@ public class DeliveryDriverHateoasProcessor
         EntityModel<DeliveryDriver> model
     ) {
         model.add(
-            Link.of(model.getRequiredLink("self").getHref() + "/").withRel("")
+            Link
+                .of(model.getRequiredLink("self").getHref() + "/deliverfood")
+                .withRel("deliverfood")
         );
         model.add(
-            Link.of(model.getRequiredLink("self").getHref() + "/").withRel("")
+            Link
+                .of(
+                    model.getRequiredLink("self").getHref() + "//updatelocation"
+                )
+                .withRel("/updatelocation")
         );
 
         return model;

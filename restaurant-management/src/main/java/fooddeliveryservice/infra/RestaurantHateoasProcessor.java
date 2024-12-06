@@ -13,10 +13,14 @@ public class RestaurantHateoasProcessor
     @Override
     public EntityModel<Restaurant> process(EntityModel<Restaurant> model) {
         model.add(
-            Link.of(model.getRequiredLink("self").getHref() + "/").withRel("")
+            Link
+                .of(model.getRequiredLink("self").getHref() + "//acceptorder")
+                .withRel("/acceptorder")
         );
         model.add(
-            Link.of(model.getRequiredLink("self").getHref() + "/").withRel("")
+            Link
+                .of(model.getRequiredLink("self").getHref() + "//rejectorder")
+                .withRel("/rejectorder")
         );
 
         return model;

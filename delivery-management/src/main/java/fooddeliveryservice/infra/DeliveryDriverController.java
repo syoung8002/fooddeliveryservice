@@ -21,7 +21,7 @@ public class DeliveryDriverController {
     DeliveryDriverRepository deliveryDriverRepository;
 
     @RequestMapping(
-        value = "/deliveryDrivers/{id}/",
+        value = "/deliveryDrivers/{id}/deliverfood",
         method = RequestMethod.PUT,
         produces = "application/json;charset=UTF-8"
     )
@@ -47,29 +47,20 @@ public class DeliveryDriverController {
     }
 
     @RequestMapping(
-        value = "/deliveryDrivers/{id}/",
-        method = RequestMethod.PUT,
+        value = "/deliveryDrivers/updatelocation",
+        method = RequestMethod.POST,
         produces = "application/json;charset=UTF-8"
     )
     public DeliveryDriver updateLocation(
-        @PathVariable(value = "id") String id,
-        @RequestBody UpdateLocationCommand updateLocationCommand,
         HttpServletRequest request,
-        HttpServletResponse response
+        HttpServletResponse response,
+        @RequestBody UpdateLocationCommand updateLocationCommand
     ) throws Exception {
         System.out.println(
             "##### /deliveryDriver/updateLocation  called #####"
         );
-        Optional<DeliveryDriver> optionalDeliveryDriver = deliveryDriverRepository.findById(
-            id
-        );
-
-        optionalDeliveryDriver.orElseThrow(() ->
-            new Exception("No Entity Found")
-        );
-        DeliveryDriver deliveryDriver = optionalDeliveryDriver.get();
+        DeliveryDriver deliveryDriver = new DeliveryDriver();
         deliveryDriver.updateLocation(updateLocationCommand);
-
         deliveryDriverRepository.save(deliveryDriver);
         return deliveryDriver;
     }
